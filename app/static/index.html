@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LED 混光配方台</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>LED 混光配方台</h1>
+    <p class="subtitle">OR-Tools CP-SAT 求解 · 最小总功率配方 · 功率相同取驱动级字典序最小</p>
+  </header>
+
+  <div class="layout">
+    <section class="panel editor">
+      <h2>通道编辑 <span class="hint">（3～6 路，ID 唯一）</span></h2>
+      <div id="channel-list"></div>
+      <button id="add-channel" class="btn">＋ 添加通道</button>
+
+      <h2>目标色（线性 RGB 0～1000）</h2>
+      <div class="target-grid">
+        <label>R <input type="number" id="target-r" min="0" max="1000" step="1" value="500"></label>
+        <label>G <input type="number" id="target-g" min="0" max="1000" step="1" value="500"></label>
+        <label>B <input type="number" id="target-b" min="0" max="1000" step="1" value="500"></label>
+      </div>
+
+      <h2>共用容差（0～20）</h2>
+      <div class="tol-row">
+        <label>± <input type="number" id="tolerance" min="0" max="20" step="1" value="10"></label>
+      </div>
+
+      <button id="solve-btn" class="btn primary">求解配方</button>
+    </section>
+
+    <section class="panel results">
+      <h2>结果</h2>
+      <div id="result-empty" class="muted">点击「求解配方」开始</div>
+
+      <div id="result-content" hidden>
+        <div class="color-compare">
+          <div class="color-block">
+            <div class="color-swatch" id="target-swatch"></div>
+            <div class="color-label">目标</div>
+            <div class="color-values" id="target-values"></div>
+          </div>
+          <div class="color-block">
+            <div class="color-swatch" id="actual-swatch"></div>
+            <div class="color-label">实际（sRGB 传递函数显示）</div>
+            <div class="color-values" id="actual-values"></div>
+          </div>
+        </div>
+
+        <div class="power-line">总功率：<span id="power-value"></span> mW</div>
+        <div class="error-line">误差（实际 − 目标）：<span id="error-values"></span></div>
+
+        <h3>驱动级（0～255）</h3>
+        <table id="drives-table">
+          <thead><tr><th>ID</th><th>驱动级</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="result-error" class="error-box" hidden></div>
+    </section>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
